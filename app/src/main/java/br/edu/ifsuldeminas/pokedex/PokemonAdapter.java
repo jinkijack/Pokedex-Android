@@ -3,9 +3,12 @@ package br.edu.ifsuldeminas.pokedex;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -15,17 +18,24 @@ public class PokemonAdapter extends RecyclerView.Adapter<PokemonAdapter.PokeView
 
     public class PokeViewHolder extends RecyclerView.ViewHolder {
         public TextView name, type;
+        public ImageView ivPokemon;
 
         public PokeViewHolder(View itemView) {
             super(itemView);
-            name = (TextView) itemView.findViewById(R.id.tv_name);
-            type = (TextView) itemView.findViewById(R.id.tv_type);
+            name = itemView.findViewById(R.id.tv_name);
+            type = itemView.findViewById(R.id.tv_type);
+            ivPokemon = itemView.findViewById(R.id.iv_pokemon);
         }
     }
 
     public PokemonAdapter(List<Pokemon> pokemonList) {
         this.pokemonList = pokemonList;
     }
+
+    public void setPokemonList(List<Pokemon> filteredPokemonList) {
+        this.pokemonList = filteredPokemonList;
+    }
+
 
     @Override
     public PokeViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -39,6 +49,11 @@ public class PokemonAdapter extends RecyclerView.Adapter<PokemonAdapter.PokeView
     public void onBindViewHolder(PokeViewHolder holder, int position) {
         Pokemon pokemon = pokemonList.get(position);
         holder.name.setText(pokemon.getName());
+        String sprite = pokemon.getSprites().getFront_default();
+        Picasso.with(holder.ivPokemon.getContext())
+                .load(sprite)
+                .resize(128, 128)
+                .into(holder.ivPokemon);
 
         StringBuilder typesBuilder = new StringBuilder();
         List<PokeType> types = pokemon.getTypes();
