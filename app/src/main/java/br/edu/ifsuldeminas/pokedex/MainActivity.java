@@ -14,6 +14,7 @@ import androidx.appcompat.widget.SearchView;
 
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -32,6 +33,48 @@ public class MainActivity extends AppCompatActivity {
     SharedPreferences sharedPreferences;
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        Log.i("POKEMON QUERY", "Searching for: ");
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_search, menu);
+
+        MenuItem searchItem = menu.findItem(R.id.menu_search);
+        SearchView searchView = (SearchView) searchItem.getActionView();
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                // Chamado quando o usuário pressiona o botão de pesquisa no teclado
+                searchPokemons(query);
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                // Chamado quando o texto no SearchView muda (à medida que o usuário digita)
+                searchPokemons(newText);
+                return true;
+            }
+        });
+
+        return true;
+    }
+
+    private void searchPokemons(String query) {
+        filteredPokemonList.clear();
+        for (Pokemon pokemon : pokemonList) {
+            String pokemonName = pokemon.getName().toLowerCase();
+            String pokemonId = String.valueOf(pokemon.getId());
+
+            if (pokemonName.contains(query.toLowerCase()) || pokemonId.contains(query.toLowerCase())) {
+                filteredPokemonList.add(pokemon);
+            }
+        }
+        pokemonAdapter = new PokemonAdapter(filteredPokemonList);
+        recyclerView.setAdapter(pokemonAdapter);
+    }
+
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -46,15 +89,20 @@ public class MainActivity extends AppCompatActivity {
         RecyclerView.LayoutManager layoutManager;
         layoutManager = new LinearLayoutManager(this);
 
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(pokemonAdapter);
+        //this.filteredPokemonList = this.pokemonList;
 
         recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext(), recyclerView, new RecyclerTouchListener.ClickListener() {
             @Override
             public void onClick(View view, int position) {
                 Intent i = new Intent(MainActivity.this, DetailActivity.class);
                 i.putExtra("ID", pokemonList.get(position).getId());
+                i.putExtra("ID", filteredPokemonList.get(position).getId());
                 startActivity(i);
             }
 
@@ -126,36 +174,7 @@ public class MainActivity extends AppCompatActivity {
         editor.apply();
     }
 
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        Log.i("POKEMON QUERY", "Searching for: ");
-//        MenuInflater inflater = getMenuInflater();
-//        inflater.inflate(R.menu.menu, menu);
-//
-//        MenuItem searchItem = menu.findItem(R.id.menu_search);
-//        SearchView searchView = (SearchView) searchItem.getActionView();
-//        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-//            @Override
-//            public boolean onQueryTextSubmit(String query) {
-//                // Chamado quando o usuário pressiona o botão de pesquisa no teclado
-//                searchPokemons(query);
-//                return true;
-//            }
-//
-//            @Override
-//            public boolean onQueryTextChange(String newText) {
-//                // Chamado quando o texto no SearchView muda (à medida que o usuário digita)
-//                searchPokemons(newText);
-//                return true;
-//            }
-//        });
-//
-//        return true;
-//    }
-//
-//    private void searchPokemons(String query) {
-//        Log.i("POKEMON QUERY", "Searching for: " + query);
-//    }
+
 
 
 }
