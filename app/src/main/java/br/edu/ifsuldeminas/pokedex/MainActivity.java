@@ -78,7 +78,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        //Objects.requireNonNull(getSupportActionBar()).hide();
         sharedPreferences = getSharedPreferences("pokemon_cache", MODE_PRIVATE);
 
 
@@ -95,14 +94,16 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(pokemonAdapter);
-        //this.filteredPokemonList = this.pokemonList;
 
         recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext(), recyclerView, new RecyclerTouchListener.ClickListener() {
             @Override
             public void onClick(View view, int position) {
                 Intent i = new Intent(MainActivity.this, DetailActivity.class);
-                i.putExtra("ID", pokemonList.get(position).getId());
-                i.putExtra("ID", filteredPokemonList.get(position).getId());
+                if(filteredPokemonList.isEmpty()){
+                    i.putExtra("ID", pokemonList.get(position).getId());
+                }else{
+                    i.putExtra("ID", filteredPokemonList.get(position).getId());
+                }
                 startActivity(i);
             }
 
