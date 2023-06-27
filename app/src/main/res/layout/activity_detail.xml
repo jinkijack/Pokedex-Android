@@ -62,6 +62,7 @@
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <LinearLayout
+        android:id="@+id/linear"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/iv_detail_pokemon"
@@ -103,5 +104,15 @@
             android:textColor="@color/white"
             android:textAppearance="?android:attr/textAppearanceLargeInverse" />
     </LinearLayout>
+
+    <Button
+        android:id="@+id/btnFavoritos"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/linear"
+        android:layout_marginTop="16dp"
+        android:layout_centerHorizontal="true"
+        android:text="Adicionar aos favoritos" />
+
 
 </RelativeLayout>

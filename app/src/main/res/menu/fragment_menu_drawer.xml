@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/menu_pokedex"
+            android:title="Pokedex"
+            android:icon="@drawable/ic_home" />
+        <item
+            android:id="@+id/menu_favorites"
+            android:title="Favoritos"
+            android:icon="@drawable/ic_star" />
+    </group>
+</menu>

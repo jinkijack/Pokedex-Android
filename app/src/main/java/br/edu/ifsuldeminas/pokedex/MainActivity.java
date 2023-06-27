@@ -9,12 +9,17 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.widget.SearchView;
 
 
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -34,6 +39,12 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setHomeAsUpIndicator(R.drawable.ic_menu);
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
+
         Log.i("POKEMON QUERY", "Searching for: ");
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_search, menu);
@@ -80,16 +91,41 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         sharedPreferences = getSharedPreferences("pokemon_cache", MODE_PRIVATE);
 
-
         recyclerView = findViewById(R.id.rv_pokemons);
-
         pokemonAdapter = new PokemonAdapter(pokemonList);
-
         RecyclerView.LayoutManager layoutManager;
         layoutManager = new LinearLayoutManager(this);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        DrawerLayout drawerLayout = findViewById(R.id.drawerLayout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawerLayout, toolbar, R.string.drawer_open, R.string.drawer_close);
+        drawerLayout.addDrawerListener(toggle);
+
+        // Remove a sincronização do estado do toggle
+        toggle.setDrawerIndicatorEnabled(false);
+        toggle.setToolbarNavigationClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (drawerLayout.isDrawerVisible(GravityCompat.START)) {
+                    drawerLayout.closeDrawer(GravityCompat.START);
+                } else {
+                    drawerLayout.openDrawer(GravityCompat.START);
+                }
+            }
+        });
+
+        // Configurar o ícone de menu na action bar
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setHomeAsUpIndicator(R.drawable.ic_menu);
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
+
+        // Fecha o menu lateral ao iniciar a atividade
+        drawerLayout.closeDrawer(GravityCompat.START);
 
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -99,9 +135,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view, int position) {
                 Intent i = new Intent(MainActivity.this, DetailActivity.class);
-                if(filteredPokemonList.isEmpty()){
+                if (filteredPokemonList.isEmpty()) {
                     i.putExtra("ID", pokemonList.get(position).getId());
-                }else{
+                } else {
                     i.putExtra("ID", filteredPokemonList.get(position).getId());
                 }
                 startActivity(i);
@@ -115,6 +151,23 @@ public class MainActivity extends AppCompatActivity {
 
         addData();
     }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == android.R.id.home) {
+            DrawerLayout drawerLayout = findViewById(R.id.drawerLayout);
+            if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+                drawerLayout.closeDrawer(GravityCompat.START);
+            } else {
+                drawerLayout.openDrawer(GravityCompat.START);
+            }
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
 
     private void addData() {
         for (int i = 1; i <= 151; i++) {

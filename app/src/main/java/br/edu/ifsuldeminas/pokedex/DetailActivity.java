@@ -3,12 +3,17 @@ package br.edu.ifsuldeminas.pokedex;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.content.ContentValues;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -51,6 +56,15 @@ public class DetailActivity extends AppCompatActivity {
 
         Intent i = getIntent();
         Toast.makeText(DetailActivity.this, i.getIntExtra("ID", 0) + "", Toast.LENGTH_SHORT).show();
+
+        Button btnFavoritos = findViewById(R.id.btnFavoritos);
+        btnFavoritos.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                adicionarPokemonFavorito();
+            }
+        });
+
 
     }
 
@@ -129,5 +143,66 @@ public class DetailActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+    private void adicionarPokemonFavorito() {
+        // Crie uma instância do helper do banco de dados
+        PokemonDBHelper dbHelper = new PokemonDBHelper(this);
+
+        // Obtenha uma referência ao banco de dados em modo de escrita
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        // Verifique se o Pokémon já existe na tabela de favoritos
+        if (isPokemonFavorite(db, pokemon.getId())) {
+            Toast.makeText(this, "Este Pokémon já foi adicionado aos favoritos.", Toast.LENGTH_SHORT).show();
+            db.close();
+            return;
+        }
+
+        // Crie um objeto ContentValues para armazenar os valores a serem inseridos
+        ContentValues values = new ContentValues();
+        values.put(PokemonContract.PokemonEntry.COLUMN_NAME, pokemon.getName());
+        values.put(PokemonContract.PokemonEntry.COLUMN_POKEMON_ID, pokemon.getId());
+        // Adicione os outros campos do Pokémon à ContentValues, se necessário
+
+        // Insira os valores na tabela de favoritos
+        long newRowId = db.insert(PokemonContract.PokemonEntry.TABLE_NAME, null, values);
+
+        // Verifique se a inserção foi bem-sucedida
+        if (newRowId != -1) {
+            Toast.makeText(this, "Pokémon adicionado aos favoritos!", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(this, "Erro ao adicionar Pokémon aos favoritos.", Toast.LENGTH_SHORT).show();
+        }
+
+        // Feche a conexão com o banco de dados
+        db.close();
+    }
+
+    private boolean isPokemonFavorite(SQLiteDatabase db, int pokemonId) {
+        String[] projection = {PokemonContract.PokemonEntry._ID};
+        String selection = PokemonContract.PokemonEntry.COLUMN_POKEMON_ID + " = ?";
+        String[] selectionArgs = {String.valueOf(pokemonId)};
+        String sortOrder = null;
+
+        Cursor cursor = db.query(
+                PokemonContract.PokemonEntry.TABLE_NAME,
+                projection,
+                selection,
+                selectionArgs,
+                null,
+                null,
+                sortOrder
+        );
+
+        boolean isFavorite = cursor != null && cursor.getCount() > 0;
+
+        if (cursor != null) {
+            cursor.close();
+        }
+
+        return isFavorite;
+    }
+
+
 
 }
