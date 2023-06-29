@@ -19,7 +19,7 @@
         android:theme="@style/Theme.Pokédex"
         tools:targetApi="31">
         <activity
-            android:name=".Favoritos"
+            android:name=".FavoritosActivity"
             android:exported="false" />
         <activity
             android:name=".DetailActivity"

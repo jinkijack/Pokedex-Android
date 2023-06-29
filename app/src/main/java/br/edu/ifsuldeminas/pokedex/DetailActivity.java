@@ -58,14 +58,46 @@ public class DetailActivity extends AppCompatActivity {
         Toast.makeText(DetailActivity.this, i.getIntExtra("ID", 0) + "", Toast.LENGTH_SHORT).show();
 
         Button btnFavoritos = findViewById(R.id.btnFavoritos);
+        Button btnRemoveFavoritos = findViewById(R.id.btnRemoveFavoritos);
+        updateFavoriteButtonState();
         btnFavoritos.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 adicionarPokemonFavorito();
+                updateFavoriteButtonState();
             }
         });
-
-
+        btnRemoveFavoritos.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                removerPokemonFavorito();
+                updateFavoriteButtonState();
+            }
+        });
+    }
+    private void removerPokemonFavorito(){
+        PokemonDBHelper dbHelper = new PokemonDBHelper(this);
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        db.delete(PokemonContract.PokemonEntry.TABLE_NAME, PokemonContract.PokemonEntry.COLUMN_POKEMON_ID + " = " + pokemon.getId(), null);
+        db.close();
+        Toast.makeText(this, "Pokemon removido dos favoritos", Toast.LENGTH_SHORT).show();
+    }
+    private void updateFavoriteButtonState(){
+        Button btnFavoritos = findViewById(R.id.btnFavoritos);
+        Button btnRemoveFavoritos = findViewById(R.id.btnRemoveFavoritos);
+        PokemonDBHelper dbHelper = new PokemonDBHelper(this);
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        if (isPokemonFavorite(db,pokemon.getId())) {
+            btnFavoritos.setClickable(false);
+            btnFavoritos.setAlpha(0.5f);
+            btnRemoveFavoritos.setClickable(true);
+            btnRemoveFavoritos.setAlpha(1.0f);
+        }else{
+            btnFavoritos.setClickable(true);
+            btnFavoritos.setAlpha(1.0f);
+            btnRemoveFavoritos.setClickable(false);
+            btnRemoveFavoritos.setAlpha(0.5f);
+        }
     }
 
     private void requestData(int id) {
@@ -137,7 +169,9 @@ public class DetailActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         if (id == R.id.menu_back) {
+            setResult(RESULT_OK);
             onBackPressed();
+            finish();
             return true;
         }
 
@@ -202,7 +236,5 @@ public class DetailActivity extends AppCompatActivity {
 
         return isFavorite;
     }
-
-
 
 }

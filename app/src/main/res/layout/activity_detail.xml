@@ -47,7 +47,8 @@
         android:layout_alignTop="@+id/iv_detail_pokemon"
         android:layout_toEndOf="@+id/iv_detail_pokemon"
         android:layout_toRightOf="@+id/iv_detail_pokemon"
-        android:text="@null"
+        android:text="teste"
+        android:textColor="@color/white"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <TextView
@@ -113,6 +114,17 @@
         android:layout_marginTop="16dp"
         android:layout_centerHorizontal="true"
         android:text="Adicionar aos favoritos" />
+
+    <Button
+        android:id="@+id/btnRemoveFavoritos"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/btnFavoritos"
+        android:layout_marginTop="16dp"
+        android:layout_alignRight="@+id/btnFavoritos"
+        android:layout_alignLeft="@+id/btnFavoritos"
+        android:layout_centerHorizontal="true"
+        android:text="Remover dos favoritos" />
 
 
 </RelativeLayout>

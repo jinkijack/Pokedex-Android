@@ -78,7 +78,7 @@ public class menuLateral extends Fragment {
                     return true;
                 } else if (id == R.id.menu_favorites) {
                     // Abra a FavoritesActivity
-                    Intent intent = new Intent(getActivity(), Favoritos.class);
+                    Intent intent = new Intent(getActivity(), FavoritosActivity.class);
                     startActivity(intent);
                     return true;
                 }
