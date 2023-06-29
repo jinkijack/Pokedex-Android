@@ -16,10 +16,10 @@ import com.google.android.material.navigation.NavigationView;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link menuLateral#newInstance} factory method to
+ * Use the {@link MenuLateral#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class menuLateral extends Fragment {
+public class MenuLateral extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -30,7 +30,7 @@ public class menuLateral extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public menuLateral() {
+    public MenuLateral() {
         // Required empty public constructor
     }
 
@@ -43,8 +43,8 @@ public class menuLateral extends Fragment {
      * @return A new instance of fragment menuLateral.
      */
     // TODO: Rename and change types and number of parameters
-    public static menuLateral newInstance(String param1, String param2) {
-        menuLateral fragment = new menuLateral();
+    public static MenuLateral newInstance(String param1, String param2) {
+        MenuLateral fragment = new MenuLateral();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
