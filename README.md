@@ -12,14 +12,12 @@ Este é um aplicativo Android que permite navegar e visualizar informações sob
 
 ## Capturas de tela
 
-![Captura de Tela 1](![image](https://github.com/jinkijack/Pokedex-Android/assets/63086447/8c658610-4ea9-4e0a-9e04-74eb13296ee0)
-)
-![Captura de Tela 2](![image](https://github.com/jinkijack/Pokedex-Android/assets/63086447/b7f614d2-7253-49f6-94b2-19ac62bf506f)
-)
-![Captura de Tela 3](![image](https://github.com/jinkijack/Pokedex-Android/assets/63086447/76b31922-b62f-4763-a17d-adb60a02b559)
-)
-![Captura de Tela 4](![image](https://github.com/jinkijack/Pokedex-Android/assets/63086447/9f3ce26f-3f98-48ae-900b-903e136d0fde)
-)
+![Captura de Tela 1](https://github.com/jinkijack/Pokedex-Android/assets/63086447/8c658610-4ea9-4e0a-9e04-74eb13296ee0)
+
+![Captura de Tela 2](https://github.com/jinkijack/Pokedex-Android/assets/63086447/b7f614d2-7253-49f6-94b2-19ac62bf506f)
+![Captura de Tela 3](https://github.com/jinkijack/Pokedex-Android/assets/63086447/76b31922-b62f-4763-a17d-adb60a02b559)
+![Captura de Tela 4](https://github.com/jinkijack/Pokedex-Android/assets/63086447/9f3ce26f-3f98-48ae-900b-903e136d0fde)
+
 
 ## Tecnologias Utilizadas
 
